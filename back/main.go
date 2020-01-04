@@ -9,6 +9,7 @@ import (
 )
 
 var userControl = new(controllers.UserController)
+var bountyControl = new(controller.BountyController)
 
 func CORSMiddleware() gin.HandlerFunc {
   return func(c *gin.Context) {
@@ -33,10 +34,10 @@ func main() {
 
   Bounty := router.Group("/Bounty")
   {
-    Bounty.GET("/list", api_bounty.ListBounty)
-    Bounty.POST("/select", api_bounty.SelectBounty)
-    Bounty.POST("/register", api_bounty.RegisterBounty)
-    Bounty.POST("/update", api_bounty.UpdateBounty)
+    Bounty.GET("/ListAll", bountyControl.ListAll)
+    Bounty.POST("/Select", bountyControl.Select)
+    Bounty.POST("/Register", bountyControl.Register)
+    Bounty.POST("/Update", bountyControl.Update)
   }
 
   log.Fatal(router.Run())
