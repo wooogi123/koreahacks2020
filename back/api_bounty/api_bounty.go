@@ -94,7 +94,7 @@ func (b Bounty) upd() (bt Bounty, err error) {
 
 func SelectBounty(c *gin.Context) {
   var err error
-  db, err = sql.Open("mysql", "root@tcp(127.0.0.1:3306)/koreahacks?parseTime=true")
+  db, err = sql.Open("mysql", "akalee:ipconfig128!@tcp(127.0.0.1:3306)/koreahacks?parseTime=true")
 
   if err != nil {
     log.Fatal(err.Error())
@@ -127,7 +127,7 @@ func SelectBounty(c *gin.Context) {
 
 func ListBounty(c *gin.Context) {
   var err error
-  db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/koreahacks?parseTime=true")
+  db, err = sql.Open("mysql", "akalee:ipconfig128!@tcp(127.0.0.1:3306)/koreahacks?parseTime=true")
 
   if err != nil {
     log.Fatal(err.Error())
@@ -154,7 +154,7 @@ func ListBounty(c *gin.Context) {
 
 func RegisterBounty(c *gin.Context) {
   var err error
-  db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/koreahacks?parseTime=true")
+  db, err = sql.Open("mysql", "akalee:ipconfig128!@tcp(127.0.0.1:3306)/koreahacks?parseTime=true")
 
   if err != nil {
     log.Fatal(err.Error())
@@ -187,7 +187,7 @@ func RegisterBounty(c *gin.Context) {
 
 func UpdateBounty(c *gin.Context) {
   var err error
-  db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/koreahacks?parseTime=true")
+  db, err = sql.Open("mysql", "akalee:ipconfig128!@tcp(127.0.0.1:3306)/koreahacks?parseTime=true")
 
   if err != nil {
     log.Fatal(err.Error())
