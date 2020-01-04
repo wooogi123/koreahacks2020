@@ -1,0 +1,62 @@
+{
+  {
+    "id": 1,
+    "nickname": "test1",
+    "email": "test1@kduniv.ac.kr",
+    "password": "test1",
+    "group": "kdu",
+    "star": 0,
+    "finish_count": 0,
+    "point": 0,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": 2,
+    "nickname": "test2",
+    "email": "test2@kduniv.ac.kr",
+    "password": "test2",
+    "group": "kdu",
+    "star": 0,
+    "finish_count": 0,
+    "point": 0,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": 3,
+    "nickname": "test3",
+    "email": "test3@kduniv.ac.kr",
+    "password": "test3",
+    "group": "kdu",
+    "star": 0,
+    "finish_count": 0,
+    "point": 0,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": 4,
+    "nickname": "test4",
+    "email": "test4@kduniv.ac.kr",
+    "password": "test4",
+    "group": "kdu",
+    "star": 0,
+    "finish_count": 0,
+    "point": 0,
+    "created_at": "",
+    "updated_at": ""
+  },
+  {
+    "id": 5,
+    "nickname": "test5",
+    "email": "test5@kduniv.ac.kr",
+    "password": "test5",
+    "group": "kdu",
+    "star": 0,
+    "finish_count": 0,
+    "point": 0,
+    "created_at": "",
+    "updated_at": ""
+  }
+}
