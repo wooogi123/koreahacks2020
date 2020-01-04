@@ -1,6 +1,7 @@
 package api_bounty
 
 import (
+  "os"
   "log"
   "net/http"
   "database/sql"
@@ -22,13 +23,13 @@ type Bounty struct {
 func (b Bounty) sel() (bt Bounty, err error) {
   row := db.QueryRow(`
     SELECT Bounty.id, Bounty.state, Bounty.title, Bounty.text, Bounty.bounty, Bounty.time_limit
-	FROM Bounty
-	WHERE Bounty.id = ?
+    FROM Bounty
+    WHERE Bounty.id = ?
   `, b.Id)
 
   err = row.Scan(&bt.Id, &bt.State, &bt.Title, &bt.Text, &bt.Bounty, &bt.Time_limit)
   if err != nil {
-	return
+    return
   }
   return
 }
@@ -36,16 +37,16 @@ func (b Bounty) sel() (bt Bounty, err error) {
 func (b Bounty) selAll() (bts[] Bounty, err error) {
   rows, err := db.Query(`
     SELECT Bounty.id, Bounty.state, Bounty.title, Bounty.text, Bounty.bounty, Bounty.time_limit
-	FROM Bounty
-	WHERE Bounty.state = 1
+    FROM Bounty
+    WHERE Bounty.state = 1
   `)
   if err != nil {
     return
   }
   for rows.Next() {
     var bt Bounty
-	rows.Scan(&bt.Id, &bt.State, &bt.Title, &bt.Text, &bt.Bounty, &bt.Time_limit)
-	bts = append(bts, bt)
+    rows.Scan(&bt.Id, &bt.State, &bt.Title, &bt.Text, &bt.Bounty, &bt.Time_limit)
+    bts = append(bts, bt)
   }
   defer rows.Close()
   return
@@ -54,7 +55,7 @@ func (b Bounty) selAll() (bts[] Bounty, err error) {
 func (b Bounty) ins() (id int64, err error) {
   stmt, err := db.Prepare(`
     INSERT INTO Bounty (Bounty.title, Bounty.text, Bounty.bounty, Bounty.time_limit)
-	VALUES (?, ?, ?, ?)
+    VALUES (?, ?, ?, ?)
   `)
   if err != nil {
     return
@@ -74,8 +75,8 @@ func (b Bounty) ins() (id int64, err error) {
 func (b Bounty) upd() (bt Bounty, err error) {
   stmt, err := db.Prepare(`
     UPDATE Bounty
-	SET Bounty.state = ?, Bounty.title = ?, Bounty.text = ?, Bounty.bounty = ?, Bounty.time_limit = ?, updated_at = CURRENT_TIMESTAMP
-	WHERE Bounty.id = ?
+    SET Bounty.state = ?, Bounty.title = ?, Bounty.text = ?, Bounty.bounty = ?, Bounty.time_limit = ?, updated_at = CURRENT_TIMESTAMP
+    WHERE Bounty.id = ?
   `)
   if err != nil {
     return
@@ -94,7 +95,8 @@ func (b Bounty) upd() (bt Bounty, err error) {
 
 func SelectBounty(c *gin.Context) {
   var err error
-  db, err = sql.Open("mysql", "akalee:ipconfig128!@tcp(127.0.0.1:3306)/koreahacks?parseTime=true")
+  db_source := os.Getenv("DB_USER") + ":" + os.Getenv("DB_PASSWORD") + "@tcp(127.0.0.1:3306)/" + os.Getenv("DB_NAME") + "?parseTime=true"
+  db, err = sql.Open("mysql", db_source)
 
   if err != nil {
     log.Fatal(err.Error())
@@ -103,31 +105,34 @@ func SelectBounty(c *gin.Context) {
 
   var b Bounty
   if err := c.ShouldBindJSON(&b); err != nil {
+    log.Println("Data not Bind!")
     c.JSON(http.StatusBadRequest, gin.H{
-	  "status": "error",
-	  "content": nil,
-	})
-	return
+      "status": "error",
+      "content": "Data not Bind!",
+    })
+    return
   }
   bt, err := b.sel()
   if err != nil {
+    log.Println("Data not Select!")
     c.JSON(http.StatusBadRequest, gin.H{
-	  "status": "error",
-	  "content": err,
-	})
-	return
+      "status": "error",
+      "content": err,
+    })
+    return
   }
 
   c.JSON(http.StatusOK, gin.H{
     "status": "success",
-	"content": bt,
+    "content": bt,
   })
   return
 }
 
 func ListBounty(c *gin.Context) {
   var err error
-  db, err = sql.Open("mysql", "akalee:ipconfig128!@tcp(127.0.0.1:3306)/koreahacks?parseTime=true")
+  db_source := os.Getenv("DB_USER") + ":" + os.Getenv("DB_PASSWORD") + "@tcp(127.0.0.1:3306)/" + os.Getenv("DB_NAME") + "?parseTime=true"
+  db, err = sql.Open("mysql", db_source)
 
   if err != nil {
     log.Fatal(err.Error())
@@ -137,24 +142,26 @@ func ListBounty(c *gin.Context) {
   var b Bounty
   bts, err := b.selAll()
   if err != nil {
+    log.Println("Data not SelectAll!")
     c.JSON(http.StatusBadRequest, gin.H{
-	  "status": "error",
-	  "content": err,
-	})
-	return
+      "status": "error",
+      "content": err,
+    })
+    return
   }
 
   c.JSON(http.StatusOK, gin.H{
     "status": "success",
-	"length": len(bts),
-	"content": bts,
+    "length": len(bts),
+    "content": bts,
   })
   return
 }
 
 func RegisterBounty(c *gin.Context) {
   var err error
-  db, err = sql.Open("mysql", "akalee:ipconfig128!@tcp(127.0.0.1:3306)/koreahacks?parseTime=true")
+  db_source := os.Getenv("DB_USER") + ":" + os.Getenv("DB_PASSWORD") + "@tcp(127.0.0.1:3306)/" + os.Getenv("DB_NAME") + "?parseTime=true"
+  db, err = sql.Open("mysql", db_source)
 
   if err != nil {
     log.Fatal(err.Error())
@@ -163,31 +170,34 @@ func RegisterBounty(c *gin.Context) {
 
   var b Bounty
   if err := c.ShouldBindJSON(&b); err != nil {
+    log.Println("Data not Bind!")
     c.JSON(http.StatusBadRequest, gin.H{
-	  "status": "error",
-	  "content": nil,
-	})
-	return
+      "status": "error",
+      "content": "Data not Bind!",
+    })
+    return
   }
 
   id, err := b.ins()
   if err != nil {
+    log.Println("Data insert Failed!")
     c.JSON(http.StatusBadRequest, gin.H{
-	  "status": "error",
-	  "content": err,
-	})
-	return
+      "status": "error",
+      "content": err,
+    })
+    return
   }
 
   c.JSON(http.StatusOK, gin.H{
     "status": "success",
-	"content": id,
+    "content": id,
   })
 }
 
 func UpdateBounty(c *gin.Context) {
   var err error
-  db, err = sql.Open("mysql", "akalee:ipconfig128!@tcp(127.0.0.1:3306)/koreahacks?parseTime=true")
+  db_source := os.Getenv("DB_USER") + ":" + os.Getenv("DB_PASSWORD") + "@tcp(127.0.0.1:3306)/" + os.Getenv("DB_NAME") + "?parseTime=true"
+  db, err = sql.Open("mysql", db_source)
 
   if err != nil {
     log.Fatal(err.Error())
@@ -196,24 +206,26 @@ func UpdateBounty(c *gin.Context) {
 
   var b Bounty
   if err := c.ShouldBindJSON(&b); err != nil {
+    log.Println("Data not Bind!")
     c.JSON(http.StatusBadRequest, gin.H{
-	  "status": "error",
-	  "content": nil,
-	})
-	return
+      "status": "error",
+      "content": "Data not Bind!",
+    })
+    return
   }
 
   bt, err := b.upd()
   if err != nil {
+    log.Println("Data update Failed!")
     c.JSON(http.StatusBadRequest, gin.H{
-	  "status": "error", 
-	  "content": err,
-	})
-	return
+      "status": "error",
+      "content": err,
+    })
+    return
   }
 
   c.JSON(http.StatusOK, gin.H{
     "status": "success",
-	"content": bt,
+    "content": bt,
   })
 }

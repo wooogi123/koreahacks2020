@@ -88,7 +88,7 @@ func (u User) upd() (user User, err error) {
 
 func LoginUser(c *gin.Context) {
   var err error
-  db, err = sql.Open("mysql", os.Getenv("DB_USER") + os.Getenv("DB_PASSWORD") + "@tcp(127.0.0.1:3306)/" + os.Getenv("DB_NAME"))
+  db, err = sql.Open("mysql", os.Getenv("DB_USER") + ":" + os.Getenv("DB_PASSWORD") + "@tcp(127.0.0.1:3306)/" + os.Getenv("DB_NAME"))
 
   if err != nil {
     log.Fatal(err.Error())
@@ -123,7 +123,7 @@ func LoginUser(c *gin.Context) {
 
 func RegisterUser(c *gin.Context) {
   var err error
-  db, err = sql.Open("mysql", os.Getenv("DB_USER") + os.Getenv("DB_PASSWORD") + "@tcp(127.0.0.1:3306)/" + os.Getenv("DB_NAME"))
+  db, err = sql.Open("mysql", os.Getenv("DB_USER") + ":" + os.Getenv("DB_PASSWORD") + "@tcp(127.0.0.1:3306)/" + os.Getenv("DB_NAME"))
 
   if err != nil {
     log.Fatal(err.Error())
@@ -160,7 +160,7 @@ func RegisterUser(c *gin.Context) {
 
 func UpdateUser(c *gin.Context) {
   var err error
-  db, err = sql.Open("mysql", os.Getenv("DB_USER") + os.Getenv("DB_PASSWORD") + "@tcp(127.0.0.1:3306)/" + os.Getenv("DB_NAME"))
+  db, err = sql.Open("mysql", os.Getenv("DB_USER") + ":" + os.Getenv("DB_PASSWORD") + "@tcp(127.0.0.1:3306)/" + os.Getenv("DB_NAME"))
 
   if err != nil {
     log.Fatal(err.Error())
