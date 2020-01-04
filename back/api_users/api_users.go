@@ -97,7 +97,7 @@ func LoginUser(c *gin.Context) {
   if err := c.ShouldBindJSON(&u); err != nil {
 	c.JSON(http.StatusBadRequest, gin.H{
 	  "status": "error",
-	  "conent": nil,
+	  "content": nil,
 	})
   }
   user, err := u.sel()
@@ -113,6 +113,7 @@ func LoginUser(c *gin.Context) {
     "status": "success",
 	"content": user,
   })
+  return
 }
 
 func RegisterUser(c *gin.Context) {
@@ -147,6 +148,7 @@ func RegisterUser(c *gin.Context) {
 	"id": id,
 	"content": u,
   })
+  return
 }
 
 func UpdateUser(c *gin.Context) {
@@ -180,4 +182,5 @@ func UpdateUser(c *gin.Context) {
     "status": "success",
 	"content": user,
   })
+  return
 }
