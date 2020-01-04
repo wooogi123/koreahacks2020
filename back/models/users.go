@@ -19,14 +19,14 @@ type User struct {
 func (u User) SignIn(userPayload forms.UserSignIn) (user User, err error) {
   db := db.GetDB()
   user = User{
-	Email: userPayload.Email,
-	Password: userPayload.Password,
+    Email: userPayload.Email,
+    Password: userPayload.Password,
   }
-  
+
   row := db.QueryRow(`
     SELECT Users.id, Users.nickname, Users.group, Users.star, Users.finish_count, Users.point
-	FROM Users
-	WHERE Users.email = ? AND Users.password=  ?
+    FROM Users
+    WHERE Users.email = ? AND Users.password=  ?
   `, user.Email, user.Password)
   err = row.Scan(&user.Id, &user.Nickname, &user.Group, &user.Star, &user.Finish_count, &user.Point)
   if err != nil {
@@ -39,14 +39,14 @@ func (u User) SignUp(userPayload forms.UserSignUp) (user User, err error) {
   db := db.GetDB()
   user = User{
     Nickname: userPayload.Nickname,
-	Email: userPayload.Email,
-	Password: userPayload.Password,
-	Group: userPayload.Group,
+    Email: userPayload.Email,
+    Password: userPayload.Password,
+    Group: userPayload.Group,
   }
 
   stmt, err := db.Prepare(`
     INSERT INTO Users(Users.nickname, Users.email, Users.password, Users.group)
-	VALUES(?, ?, ?, ?)
+    VALUES(?, ?, ?, ?)
   `)
   if err != nil {
     return
@@ -63,8 +63,8 @@ func (u User) SignUp(userPayload forms.UserSignUp) (user User, err error) {
 
   row := db.QueryRow(`
     SELECT Users.id, Users.nickname, Users.group, Users.star, Users.finish_count, Users.point
-	FROM Users
-	WHERE Users.id = ?
+    FROM Users
+    WHERE Users.id = ?
   `, id)
   err = row.Scan(&user.Id, &user.Nickname, &user.Group, &user.Star, &user.Finish_count, &user.Point)
   if err != nil {
@@ -76,19 +76,19 @@ func (u User) SignUp(userPayload forms.UserSignUp) (user User, err error) {
 func (u User) Update(userPayload forms.UserUpdate) (user User, err error) {
   db := db.GetDB()
   user = User{
-	Nickname: userPayload.Nickname,
+    Nickname: userPayload.Nickname,
     Email: userPayload.Email,
-	Password: userPayload.Password,
-	Group: userPayload.Group,
-	Star: userPayload.Star,
-	Finish_count: userPayload.Finish_count,
-	Point: userPayload.Point,
+    Password: userPayload.Password,
+    Group: userPayload.Group,
+    Star: userPayload.Star,
+    Finish_count: userPayload.Finish_count,
+    Point: userPayload.Point,
   }
 
   row := db.QueryRow(`
     SELECT Users.id
-	FROM Users
-	WHERE Users.email = ? AND Users.password = ?
+    FROM Users
+    WHERE Users.email = ? AND Users.password = ?
   `, user.Email, user.Password)
   err = row.Scan(&user.Id)
   if err != nil {
@@ -97,8 +97,8 @@ func (u User) Update(userPayload forms.UserUpdate) (user User, err error) {
 
   stmt, err := db.Prepare(`
     UPDATE Users
-	SET Users.nickname = ?, Users.password = ?, Users.group = ?, Users.star = ?, Users.finish_count = ?, Users.point = ?
-	WHERE Users.id = ?
+    SET Users.nickname = ?, Users.password = ?, Users.group = ?, Users.star = ?, Users.finish_count = ?, Users.point = ?
+    WHERE Users.id = ?
   `)
   if err != nil {
     return

@@ -26,9 +26,9 @@ func main() {
 
   Users := router.Group("/Users")
   {
-    User.POST("/SignIn", userControl.SignIn)
-	User.POST("/SignUp", userControl.SignUp)
-	User.POST("/Update", userControl.Update)
+    Users.POST("/SignIn", userControl.SignIn)
+    Users.POST("/SignUp", userControl.SignUp)
+    Users.POST("/Update", userControl.Update)
   }
 
   Bounty := router.Group("/Bounty")
