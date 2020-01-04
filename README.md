@@ -1,8 +1,10 @@
 Korea hacks 2020
 =======================
 
-# 작업 하는 방법
+## Notion url
+ - "https://www.notion.so/KDU-e571237024f94404855c226eb3e2f233"
 
+## 작업 하는 방법
 1. 이 Repository를 클론받는다
  - "git clone https://github.com/wooogi123/koreahacks2020.git"
 2. 각자 작업할 새 branch를 생성한다
