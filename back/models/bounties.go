@@ -106,7 +106,7 @@ func (b Bounty) Update(btPayload forms.BountyUpdate) (bt Bounty, err error) {
 
   stmt, err := db.Prepare(`
     UPDATE Bounty
-    SET Bounty.state = ?, Bounty.title = ?, Bounty.text = ?, Bounty.bounty = ?, Bounty.time_limit = ?
+    SET Bounty.state = ?, Bounty.title = ?, Bounty.text = ?, Bounty.bounty = ?, Bounty.time_limit = ?, Bounty.updated_at = CURRENT_TIMESTAMP
     WHERE Bounty.id = ?
   `)
   if err != nil {
