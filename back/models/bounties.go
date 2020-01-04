@@ -20,19 +20,19 @@ func (b Bounty) ListAll() (bts[] Bounty, err error) {
 
   rows, err := db.Query(`
     SELECT Bounty.id, Bounty.state, Bounty.title, Bounty.text, Bounty.bounty, Bounty.time_limit
-	FROM Bounty
+    FROM Bounty
   `)
   if err != nil {
     return
-  } 
+  }
   rows.Close()
-  
+
   for rows.Next() {
     err := rows.Scan(&bt.Id, &bt.State, &bt.Title, &bt.Text, &bt.Bounty, &bt.Time_limit)
-	if err != nil {
-	  return
-	}
-	bts = append(bts, bt)
+    if err != nil {
+      return
+    }
+    bts = append(bts, bt)
   }
   return
 }
@@ -45,8 +45,8 @@ func (b Bounty) Select(btPayload forms.BountySelect) (bt Bounty, err error) {
 
   row := db.QueryRow(`
     SELECT Bounty.state, Bounty.title, Bounty.text, Bounty.bounty, Bounty.time_limit
-	FROM Bounty
-	WHERE Bounty.id = ?
+    FROM Bounty
+    WHERE Bounty.id = ?
   `, bt.Id)
   err = row.Scan(&bt.State, &bt.Title, &bt.Text, &bt.Bounty, &bt.Time_limit)
   if err != nil {
@@ -59,14 +59,14 @@ func (b Bounty) Register(btPayload forms.BountyRegister) (bt Bounty, err error) 
   db := db.GetDB()
   bt = Bounty{
     Title: btPayload.Title,
-	Text: btPayload.Text,
-	Bounty: btPayload.Bounty,
-	Time_limit: btPayload.Time_limit,
+    Text: btPayload.Text,
+    Bounty: btPayload.Bounty,
+    Time_limit: btPayload.Time_limit,
   }
 
   stmt, err := db.Prepare(`
     INSERT INTO Bounty(Bounty.title, Bounty.text, Bounty.bounty, Bounty.time_limit)
-	VALUES(?, ?, ?, ?)
+    VALUES(?, ?, ?, ?)
   `)
   if err != nil {
     return
@@ -83,8 +83,8 @@ func (b Bounty) Register(btPayload forms.BountyRegister) (bt Bounty, err error) 
 
   row := db.QueryRow(`
     SELECT Bounty.id, Bounty.state, Bounty.title, Bounty.text, Bounty.bounty, Bounty.time_limit
-	FROM Bounty
-	WHERE Bounty.id = ?
+    FROM Bounty
+    WHERE Bounty.id = ?
   `, id)
   err = row.Scan(&bt.Id, &bt.State, &bt.Title, &bt.Text, &bt.Bounty, &bt.Time_limit)
   if err != nil {
@@ -97,17 +97,17 @@ func (b Bounty) Update(btPayload forms.BountyUpdate) (bt Bounty, err error) {
   db := db.GetDB()
   bt = Bounty{
     Id: btPayload.Id,
-	State: btPayload.State,
-	Title: btPayload.Title,
-	Text: btPayload.Text,
-	Bounty: btPayload.Bounty,
-	Time_limit: btPayload.Time_limit,
+    State: btPayload.State,
+    Title: btPayload.Title,
+    Text: btPayload.Text,
+    Bounty: btPayload.Bounty,
+    Time_limit: btPayload.Time_limit,
   }
 
   stmt, err := db.Prepare(`
     UPDATE Bounty
-	SET Bounty.state = ?, Bounty.title = ?, Bounty.text = ?, Bounty.bounty = ?, Bounty.time_limit = ?
-	WHERE Bounty.id = ?
+    SET Bounty.state = ?, Bounty.title = ?, Bounty.text = ?, Bounty.bounty = ?, Bounty.time_limit = ?
+    WHERE Bounty.id = ?
   `)
   if err != nil {
     return

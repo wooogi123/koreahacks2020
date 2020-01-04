@@ -5,7 +5,6 @@ import (
   "github.com/gin-gonic/gin"
 
   "./controllers"
-  "./api_bounty"
 )
 
 var userControl = new(controllers.UserController)
