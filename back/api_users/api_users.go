@@ -1,4 +1,4 @@
-package main
+package api_users
 
 import (
   "log"
@@ -48,7 +48,7 @@ func (u User) ins() (id int64, err error) {
 	) VALUES (?, ?, ?, ?, ?, ?, ?)
   `)
   if err != nil {
-	log.Fatal(err)
+	return
   }
   rs, err := stmt.Exec(u.Nickname, u.Email, u.Password, u.Group, u.Star, u.Finish_count, u.Point)
   if err != nil {
@@ -56,7 +56,7 @@ func (u User) ins() (id int64, err error) {
   }
   id, err = rs.LastInsertId()
   if err != nil {
-    log.Fatal(err)
+	return
   }
   defer stmt.Close()
   return
@@ -69,22 +69,30 @@ func (u User) upd() (user User, err error) {
 	WHERE Users.email = ?
   `)
   if err != nil {
-    log.Fatal(err)
+	return
   }
   _, err = stmt.Exec(u.Nickname, u.Password, u.Group, u.Star, u.Finish_count, u.Point, u.Email)
   if err != nil {
-	log.Fatal(err)
+	return
   }
   defer stmt.Close()
 
   user, err = u.sel()
   if err != nil {
-	log.Fatal(err)
+	return
   }
   return
 }
 
-func loginUser(c *gin.Context) {
+func LoginUser(c *gin.Context) {
+  var err error
+  db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/koreahacks")
+
+  if err != nil {
+    log.Fatal(err.Error())
+  }
+  defer db.Close()
+
   var u User
   if err := c.ShouldBindJSON(&u); err != nil {
 	c.JSON(http.StatusBadRequest, gin.H{
@@ -96,7 +104,7 @@ func loginUser(c *gin.Context) {
   if err != nil {
     c.JSON(http.StatusUnauthorized, gin.H{
 	  "status": "error",
-	  "content": "login failed",
+	  "content": err,
 	})
 	return
   }
@@ -107,7 +115,15 @@ func loginUser(c *gin.Context) {
   })
 }
 
-func registerUser(c *gin.Context) {
+func RegisterUser(c *gin.Context) {
+  var err error
+  db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/koreahacks")
+
+  if err != nil {
+    log.Fatal(err.Error())
+  }
+  defer db.Close()
+
   var u User
   if err := c.ShouldBindJSON(&u); err != nil {
     c.JSON(http.StatusBadRequest, gin.H{
@@ -123,6 +139,7 @@ func registerUser(c *gin.Context) {
 	  "status": "error",
 	  "content": err,
 	})
+	return
   }
 
   c.JSON(http.StatusOK, gin.H{
@@ -132,7 +149,15 @@ func registerUser(c *gin.Context) {
   })
 }
 
-func updateUser(c *gin.Context) {
+func UpdateUser(c *gin.Context) {
+  var err error
+  db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/koreahacks")
+
+  if err != nil {
+    log.Fatal(err.Error())
+  }
+  defer db.Close()
+
   var u User
   if err := c.ShouldBindJSON(&u); err != nil {
     c.JSON(http.StatusBadRequest, gin.H{
@@ -148,35 +173,11 @@ func updateUser(c *gin.Context) {
 	  "status": "error",
 	  "content": err,
 	})
+	return
   }
 
   c.JSON(http.StatusOK, gin.H{
     "status": "success",
 	"content": user,
   })
-}
-
-func main() {
-  var err error
-  db, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/koreahacks")
-  if err != nil {
-    log.Fatal(err.Error())
-  }
-  defer db.Close()
-
-  err = db.Ping()
-  if err != nil {
-    log.Fatal(err.Error())
-  }
-
-  router := gin.Default()
-
-  Users := router.Group("/Users")
-  {
-    Users.POST("/login", loginUser)
-	Users.POST("/register", registerUser)
-	Users.POST("/update", updateUser)
-  }
-
-  log.Fatal(router.Run())
 }
