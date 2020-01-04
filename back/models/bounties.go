@@ -14,9 +14,9 @@ type Bounty struct {
   Time_limit string `json:"time_limit"`
 }
 
-func (b Bounty) ListAll() (bts[] Bounty, err error) {
+func (b Bounty) ListAll() (bts []Bounty, err error) {
   db := db.GetDB()
-  bt = Bounty{}
+  bt := Bounty{}
 
   rows, err := db.Query(`
     SELECT Bounty.id, Bounty.state, Bounty.title, Bounty.text, Bounty.bounty, Bounty.time_limit
@@ -25,10 +25,10 @@ func (b Bounty) ListAll() (bts[] Bounty, err error) {
   if err != nil {
     return
   }
-  rows.Close()
+  defer rows.Close()
 
   for rows.Next() {
-    err := rows.Scan(&bt.Id, &bt.State, &bt.Title, &bt.Text, &bt.Bounty, &bt.Time_limit)
+    err = rows.Scan(&bt.Id, &bt.State, &bt.Title, &bt.Text, &bt.Bounty, &bt.Time_limit)
     if err != nil {
       return
     }

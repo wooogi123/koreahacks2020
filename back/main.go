@@ -8,7 +8,7 @@ import (
 )
 
 var userControl = new(controllers.UserController)
-var bountyControl = new(controller.BountyController)
+var bountyControl = new(controllers.BountyController)
 
 func CORSMiddleware() gin.HandlerFunc {
   return func(c *gin.Context) {

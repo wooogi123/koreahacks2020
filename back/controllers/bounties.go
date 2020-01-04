@@ -85,7 +85,7 @@ func (b BountyController) Register(c *gin.Context) {
 }
 
 func (b BountyController) Update(c *gin.Context) {
-  model := new(form.BountyUpdate)
+  model := new(forms.BountyUpdate)
   if err := c.ShouldBindJSON(&model); err != nil {
     log.Println("Data not Bind!")
     c.JSON(http.StatusBadRequest, gin.H{
