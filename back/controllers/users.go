@@ -1,17 +1,20 @@
 package controllers
 
 import (
+  "log"
+  "net/http"
   "github.com/gin-gonic/gin"
   "../models"
-  "net/http"
+  "../forms"
 )
 
 type UserController struct{}
 
-var userModel = new(models.User)
+var userModel = new (models.User)
 
 func (u UserController) SignIn(c *gin.Context) {
-  if err := c.ShouldBindJSON(&userModel); err != nil {
+  model := new(forms.UserSignIn)
+  if err := c.ShouldBindJSON(&model); err != nil {
     log.Println("Data not Bind!")
 	c.JSON(http.StatusBadRequest, gin.H{
 	  "status": "error",
@@ -19,7 +22,7 @@ func (u UserController) SignIn(c *gin.Context) {
 	})
 	return
   }
-  user, err := userModel.SignIn()
+  user, err := userModel.SignIn(*model)
   if err != nil {
     log.Println("Sign In Error!")
 	c.JSON(http.StatusUnauthorized, gin.H{
@@ -37,7 +40,8 @@ func (u UserController) SignIn(c *gin.Context) {
 }
 
 func (u UserController) SignUp(c *gin.Context) {
-  if err := c.ShouldBindJSON(&userModel); err != nil {
+  model := new(forms.UserSignUp)
+  if err := c.ShouldBindJSON(&model); err != nil {
     log.Println("Data not Bind!")
 	c.JSON(http.StatusBadRequest, gin.H{
 	  "status": "error",
@@ -45,7 +49,7 @@ func (u UserController) SignUp(c *gin.Context) {
 	})
 	return
   }
-  user, err := userModel.SignUp()
+  user, err := userModel.SignUp(*model)
   if err != nil {
     log.Println("Sign Up Error!")
 	c.JSON(http.StatusBadRequest, gin.H{
@@ -63,7 +67,8 @@ func (u UserController) SignUp(c *gin.Context) {
 }
 
 func (u UserController) Update(c *gin.Context) {
-  if err := c.ShouldBindJSON(&userModel); err != nil {
+  model := new(forms.UserUpdate)
+  if err := c.ShouldBindJSON(&model); err != nil {
     log.Println("Data not Bind!")
 	c.JSON(http.StatusBadRequest, gin.H{
 	  "status": "error",
@@ -71,7 +76,7 @@ func (u UserController) Update(c *gin.Context) {
 	})
 	return
   }
-  user, err := userModel.Update()
+  user, err := userModel.Update(*model)
   if err != nil {
     log.Println("Update Error!")
 	c.JSON(http.StatusBadRequest, gin.H{

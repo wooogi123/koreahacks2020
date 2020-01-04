@@ -1,9 +1,6 @@
 package models
 
 import (
-  "log"
-  "time"
-
   "../db"
   "../forms"
 )
@@ -58,14 +55,14 @@ func (u User) SignUp(userPayload forms.UserSignUp) (user User, err error) {
   if err != nil {
     return
   }
-  id, err = rs.LastInsertId()
+  id, err := rs.LastInsertId()
   if err != nil {
     return
   }
   defer stmt.Close()
 
   row := db.QueryRow(`
-    SELECT Users.id, Users.nickname, Users.group, Uesrs.star, Users.finish_count, Users.point
+    SELECT Users.id, Users.nickname, Users.group, Users.star, Users.finish_count, Users.point
 	FROM Users
 	WHERE Users.id = ?
   `, id)
@@ -76,7 +73,7 @@ func (u User) SignUp(userPayload forms.UserSignUp) (user User, err error) {
   return
 }
 
-func (u User) Update(userPayload User) (user User, err error) {
+func (u User) Update(userPayload forms.UserUpdate) (user User, err error) {
   db := db.GetDB()
   user = User{
 	Nickname: userPayload.Nickname,
@@ -106,7 +103,7 @@ func (u User) Update(userPayload User) (user User, err error) {
   if err != nil {
     return
   }
-  _, err = stmt.Exec(user.Nickname, user.Password, user.Group, user.Star, user.Finish_count, user.Point)
+  _, err = stmt.Exec(user.Nickname, user.Password, user.Group, user.Star, user.Finish_count, user.Point, user.Id)
   if err != nil {
     return
   }
