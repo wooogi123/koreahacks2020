@@ -7,3 +7,6 @@ Korea hacks 2020
 
 ### /front Directory
  - front-end source directory
+
+### /publish Directory
+ - published source directory
