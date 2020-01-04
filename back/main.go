@@ -4,9 +4,11 @@ import (
   "log"
   "github.com/gin-gonic/gin"
 
-  "./api_users"
+  "./controllers"
   "./api_bounty"
 )
+
+var userControl = new(controllers.UserController)
 
 func CORSMiddleware() gin.HandlerFunc {
   return func(c *gin.Context) {
@@ -24,9 +26,9 @@ func main() {
 
   Users := router.Group("/Users")
   {
-    Users.POST("/login", api_users.LoginUser)
-    Users.POST("/register", api_users.RegisterUser)
-    Users.POST("/update", api_users.UpdateUser)
+    User.POST("/SignIn", userControl.SignIn)
+	User.POST("/SignUp", userControl.SignUp)
+	User.POST("/Update", userControl.Update)
   }
 
   Bounty := router.Group("/Bounty")
